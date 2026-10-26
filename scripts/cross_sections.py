@@ -9,7 +9,7 @@ from pathlib import Path
 
 import flopy
 import numpy as np
-from mf2005_to_mf6 import load_mf2005, mf2005_name, mf2005_output
+from mf2005_to_mf6 import load_mf2005, mf2005_heads_zeta
 
 # model row (one-based) and end labels of each cross section in figure 26
 SECTIONS = {
@@ -24,18 +24,19 @@ FEET_PER_MILE = 5280.0
 
 
 def mf2005_results(island: str, scenario: int = 0) -> dict:
-    """Grid, heads, and interface of a data release model."""
+    """Grid, heads, and interface of a data release model.
+
+    Heads and interface are averages of the last two saved time steps.
+    """
     m = load_mf2005(island, scenario)
-    name = mf2005_name(island, scenario)
-    out = mf2005_output(island, scenario)
-    zobj = flopy.utils.CellBudgetFile(out / f"{name}.zta")
+    head, zeta = mf2005_heads_zeta(island, scenario)
     return {
         "delr": m.dis.delr.array,
         "top": m.dis.top.array,
         "botm": m.dis.botm.array,
         "active": m.bas6.ibound.array != 0,
-        "head": flopy.utils.HeadFile(out / f"{name}.hds").get_data(),
-        "zeta": zobj.get_data(text="ZETASRF  1")[-1],
+        "head": head,
+        "zeta": zeta,
     }
 
 

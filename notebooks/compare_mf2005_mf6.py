@@ -31,7 +31,7 @@ import numpy as np
 
 root = next(p for p in (Path.cwd(), *Path.cwd().parents) if (p / "pixi.toml").exists())
 sys.path.insert(0, str(root / "scripts"))
-from mf2005_to_mf6 import convert, mf2005_name, mf2005_output
+from mf2005_to_mf6 import convert, mf2005_heads_zeta
 
 # %% [markdown]
 # ## Island and scenario
@@ -59,14 +59,12 @@ gwf = sim.get_model()
 # %% [markdown]
 # ## Load the results
 #
-# The MODFLOW-2005 interface and heads are from the last saved time step.
+# The MODFLOW-2005 interface and heads are averages of the last two saved time
+# steps, as in Izuka and Rotzoll (2023), which damps the interface oscillation
+# at sharp hydraulic-conductivity contrasts.
 
 # %%
-name = mf2005_name(island, scenario)
-out05 = mf2005_output(island, scenario)
-zobj05 = flopy.utils.CellBudgetFile(out05 / f"{name}.zta")
-zeta05 = zobj05.get_data(text="ZETASRF  1")[-1]
-head05 = flopy.utils.HeadFile(out05 / f"{name}.hds").get_data()
+head05, zeta05 = mf2005_heads_zeta(island, scenario)
 
 zeta6 = flopy.utils.HeadFile(ws / "output" / f"{island}.zta", text="zeta").get_data()
 head6 = gwf.output.head().get_data()

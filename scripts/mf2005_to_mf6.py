@@ -45,6 +45,27 @@ def mf2005_output(island: str, scenario: int = 0) -> Path:
     return DATA_DIR / "output" / f"output.{island}.{scenario}"
 
 
+def mf2005_heads_zeta(
+    island: str, scenario: int = 0, average: bool = True
+) -> tuple[np.ndarray, np.ndarray]:
+    """Heads and interface of a data release model.
+
+    By default these are the averages of the last two saved time steps, which
+    Izuka and Rotzoll (2023) used to damp the interface oscillation at sharp
+    hydraulic-conductivity contrasts; otherwise they are from the last step.
+    """
+    name = mf2005_name(island, scenario)
+    out = mf2005_output(island, scenario)
+    hobj = flopy.utils.HeadFile(out / f"{name}.hds")
+    heads = [hobj.get_data(totim=t) for t in hobj.get_times()[-2:]]
+    zetas = flopy.utils.CellBudgetFile(out / f"{name}.zta").get_data(text="ZETASRF  1")[
+        -2:
+    ]
+    if not average:
+        return heads[-1], zetas[-1]
+    return 0.5 * (heads[0] + heads[1]), 0.5 * (zetas[0] + zetas[1])
+
+
 def stress_period_data(package, fields: list[str]) -> list:
     rec = package.stress_period_data[0]
     return [
