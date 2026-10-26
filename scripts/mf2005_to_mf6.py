@@ -150,13 +150,15 @@ def convert(
 
     sim = flopy.mf6.MFSimulation(sim_name=island, sim_ws=ws, exe_name=exe_name)
     flopy.mf6.ModflowTdis(sim, time_units="days", perioddata=[(1.0, 1, 1.0)])
+    # the outer closure matches the MODFLOW-2005 PCG HCLOSE; the Oahu model
+    # takes about 930 outer iterations
     ims = flopy.mf6.ModflowIms(
         sim,
         complexity="complex",
-        outer_maximum=500,
+        outer_maximum=2000,
         inner_maximum=300,
-        outer_dvclose=1.0e-3,
-        inner_dvclose=1.0e-4,
+        outer_dvclose=0.1,
+        inner_dvclose=1.0e-2,
         rcloserecord=[10.0, "strict"],
         linear_acceleration="bicgstab",
     )

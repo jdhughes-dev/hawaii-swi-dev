@@ -69,7 +69,7 @@ gwf = sim.get_model()
 name = mf2005_name(island, scenario)
 out05 = mf2005_output(island, scenario)
 zobj05 = flopy.utils.CellBudgetFile(out05 / f"{name}.zta")
-zeta05 = zobj05.get_data(text="ZETASRF  1", totim=zobj05.get_times()[-1])[0]
+zeta05 = zobj05.get_data(text="ZETASRF  1")[-1]
 head05 = flopy.utils.HeadFile(out05 / f"{name}.hds").get_data()
 
 zeta6 = flopy.utils.HeadFile(ws / "output" / f"{island}.zta", text="zeta").get_data()
