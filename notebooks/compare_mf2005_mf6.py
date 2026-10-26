@@ -35,7 +35,7 @@ import numpy as np
 
 root = next(p for p in (Path.cwd(), *Path.cwd().parents) if (p / "pixi.toml").exists())
 sys.path.insert(0, str(root / "scripts"))
-from mf2005_to_mf6 import convert, mf2005_name, mf2005_output  # noqa: E402
+from mf2005_to_mf6 import convert, mf2005_name, mf2005_output
 
 # %% [markdown]
 # ## Island and scenario
