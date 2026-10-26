@@ -1,0 +1,4 @@
+# pair each notebook with a .ipynb; the .py is tracked, the .ipynb is not
+formats = "ipynb,py:percent"
+# keep only the kernel in the .py header, so it does not change with jupytext
+notebook_metadata_filter = "kernelspec,-jupytext"

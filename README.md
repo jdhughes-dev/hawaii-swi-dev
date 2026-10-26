@@ -60,6 +60,14 @@ Set the output file names in flopy with the `output/` prefix (e.g.
 mf6, which does not create it. `output/` directories and MODFLOW 6 output files
 (`*.hds`, `*.cbc`, `*.grb`, `*.lst`, etc.) are excluded from the repository.
 
+## Notebooks
+
+The notebooks in `notebooks/` and `notebooks-verification/` are jupytext
+percent-format `.py` files, which are the tracked source. Each is paired with a
+`.ipynb` of the same name (`jupytext.toml`), which is not tracked; opening and
+saving either file in JupyterLab updates both, and `pixi run sync-notebooks`
+creates or updates the `.ipynb` files.
+
 ## SWI test notebooks
 
 `notebooks-verification/` holds jupytext notebooks that build, run, and plot the SWI Package

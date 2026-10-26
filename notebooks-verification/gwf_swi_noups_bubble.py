@@ -1,9 +1,5 @@
 # ---
 # jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
 #   kernelspec:
 #     display_name: Python 3
 #     language: python

@@ -76,6 +76,9 @@ run-verification-notebooks = "python scripts/run_verification_notebooks.py"
 docs-build = "python scripts/sphinx_build.py"
 docs-build-exec = "python scripts/sphinx_build.py --execute"
 docs-clean = "rm -rf docs/_build docs/source/notebooks"
+# Create or update the .ipynb paired with each jupytext .py notebook, from
+# whichever of the two was edited last.
+sync-notebooks = "jupytext --sync notebooks/*.py notebooks-verification/*.py"
 jupyter = "jupyter lab"
 lint = "ruff check ."
 format = "ruff format ."
